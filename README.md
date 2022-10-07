@@ -1,4 +1,4 @@
-# pangphuann.tw
+# pangphuann-tw-nuxt
 
 ## Build Setup
 
