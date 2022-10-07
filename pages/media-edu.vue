@@ -16,7 +16,7 @@ const defaultLocale = '_tw'
 
 export default {
   async asyncData({ app, query }) {
-    const url = 'https://docs.google.com/document/d/e/2PACX-1vTDqM9y8HpAPL9J7RaYfcXF9eBJoVngDK5FGhP0GnkKCygEd63QHsNpslp1pA9ucon4xnaxwwIynQ95/pub'
+    const url = 'https://docs.google.com/document/d/e/2PACX-1vRkYFy-rFeOIQ3JMorF1FPw35oKGFNlsvDO1s03KcEibx7-ysxJ1NWFZ00eJTwVswxSBQRjG4xU-x9F/pub'
     const doc = await getDoc(url, defaultLocale, true)
     const structuredDoc = structureDoc(doc.html, ['h2'])
     const sections = []
