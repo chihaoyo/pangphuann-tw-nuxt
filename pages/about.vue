@@ -1,7 +1,7 @@
 <template>
 <div class="page about">
   <div v-for="section of sections" :key="section.title" class="section" :class="section.classes" :style="section.styles">
-    <div class="image" :style="section.backgroundImageStyles"></div>
+    <div v-if="section.image" class="image" :style="section.backgroundImageStyles"></div>
     <h2><span>{{ section.title }}</span></h2>
     <div class="content" v-html="section.html"></div>
   </div>
@@ -38,7 +38,7 @@ export default {
     }
   },
   head() {
-    return generateMeta(this.doc.title)
+    return generateMeta(this.doc.title, this.doc.subtitle, this.doc.summary, this.doc.coverImage)
   }
 }
 </script>
