@@ -9,8 +9,8 @@
   </div>
   <div class="info">
     <div class="item"><label class="key">立案證號</label><label class="value">台內團字第 1090044406 號</label></div>
-    <div class="item"><label class="key">法人登記證書字號</label><label class="value">法人登記社字第 000135 號</label></div>
-    <div class="item"><label class="key">公開勸募字號</label><label class="value">衛部救字第 1101363068 號</label></div>
+    <div class="item"><label class="key">法人登記字號</label><label class="value">法人登記他字第 000210 號</label></div>
+    <div class="item"><label class="key">公益勸募字號</label><label class="value">衛部救字第 1111362376 號</label></div>
   </div>
 </footer>
 </template>
