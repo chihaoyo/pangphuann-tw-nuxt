@@ -8,12 +8,64 @@
     <a href="https://www.facebook.com/pangphuann" class="button fb" target="_blank"></a>
   </div>
   <div class="info">
-    <div class="item"><label class="key">立案證號</label><label class="value">台內團字第 1090044406 號</label></div>
-    <div class="item"><label class="key">法人登記字號</label><label class="value">法人登記他字第 000210 號</label></div>
-    <!--<div class="item"><label class="key">公益勸募字號</label><label class="value">衛部救字第 1111362376 號</label></div>-->
+    <div class="item" v-for="entry of entries" :key="entry.k"><label class="key">{{ entry.k }}</label><label class="value">{{ entry.v }}</label></div>
   </div>
 </footer>
 </template>
+
+<script>
+const axios = require('axios')
+const cheerio = require('cheerio')
+
+export default {
+  async fetch() {
+    const publicURL = 'https://docs.google.com/document/d/e/2PACX-1vSXefK9vJKhIdaoOgkIFmpMa4O04ykSF3ThFUtTj-sNXLNmlgAMblm5gu3YcObVUzZwPjb0eIAo9jtq/pub'
+    let gdoc = await axios.get(publicURL)
+    gdoc = gdoc.data
+    gdoc = gdoc.split('\n').map(line => line.trim())
+    gdoc = gdoc.join('')
+    gdoc = gdoc.replace(/<head[^>]*>.*<\/head>/, '')
+    gdoc = gdoc.replace(/<style[^>]*>.*<\/style>/, '')
+    gdoc = gdoc.replace(/<script[^>]*>.*<\/script>/, '')
+    gdoc = gdoc.replace(/<div id="banners">.*<\/div><div id="contents">/, '<div id="contents">')
+    gdoc = gdoc.replace(/<span[^>]*><\/span>/g, '')
+    gdoc = gdoc.replace(/<p[^>]*>\s*<\/p>/g, '')
+    gdoc = gdoc.replace(/<a[^>]*>\s*<\/a>/g, '')
+
+    let $ = cheerio.load(gdoc)
+    $('#header, #footer').remove()
+    $('#contents').removeAttr('id').children().first().addClass('content')
+    gdoc = $('div.content').html()
+    $ = cheerio.load('<div class="content">' + gdoc + '</div>')
+
+    const tables = $('table')
+    for(let i = 0; i < tables.length; i++) {
+      const table = tables.eq(i)
+      const cells = table.find('td')
+      const firstCell = cells.eq(0)
+      const type = firstCell.text()
+      if(type === 'end') {
+        table.nextAll().remove()
+        table.remove()
+      }
+    }
+
+    const infoTable = $('table').eq(0)
+    const cells = infoTable.find('td')
+    for(let i = 0; i < cells.length; i += 2) {
+      const k = cells.eq(i).text()
+      const v = cells.eq(i + 1).text()
+      this.entries.push({ k, v })
+    }
+  },
+  data() {
+    return {
+      entries: []
+    }
+  }
+}
+
+</script>
 
 <style lang="scss">
 footer {
